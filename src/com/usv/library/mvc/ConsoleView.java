@@ -6,51 +6,25 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import com.usv.library.InformSystem;
+
+/**
+ * The console realization of {@link View} component
+ * @author vgkseul26
+ *
+ */
 public class ConsoleView implements View {
-	private static final String BOOKS_NOT_FOUND = "Books not found";
-	private static final String FILE_NOT_FOUND = "File not found";
-	private static final String COPY_SUCCESS = "Copy success";
-	private static final String COPY = "copy";
-	private static final String UNKNOWN_COMMAND = "Unknown command";
-	private static final String THIS_BOOK_IS_NOT_EXIST = "This book is not exist";
-	private static final String EDIT_SUCCESS = "Edit success";
-	private static final String ADD_SUCCESS = "Add success";
-	private static final String DELETE_SUCCESS = "Delete success";
-	private static final String THIS_NUM_IS_NOT_EXIST = "This num is not exist";
-	private static final String HELP = "help";
-	private static final String VIEW_ALL = "viewAll";
-	private static final String VIEW = "view";
-	private static final String DEL = "del";
-	private static final String EDIT = "edit";
-	private static final String ENTER_CORRECT_PARAMETRES_PLEASE = "Enter correct parametres, please";
-	private static final String TOO_MUCH_PARAMETERS = "Too much parameters";
-	private static final String ENTER_MORE_PARAMETERS = "Enter more parameters";
-	private static final String THANK_YOU_FOR_USING_OUR_SYS_INFO_GOODBYE = "Thank you for using our SysInfo, Goodbye!";
-	private static final String ADD = "add";
-	private static final String EXIT = "exit";
-	private static final String PLEASE_ENTER_COMMAND_YOU_NEED_ENTER_HELP_FOR_HELP = "Please enter command you need (enter 'help' for help.)";
-	private static final String WELCOME_TO_OUR_INFORMATION_SYSTEM = "Welcome to our Information System!";
-	private Controller control;
-	public Scanner sc;
+	private Scanner sc;
 
 	public ConsoleView() {
-
+		sc = new Scanner(System.in);
 	}
 
 	public void start() throws IOException, ClassNotFoundException {
-		// view подписывается на события model
-		// view добавляет лисненеры из контроллера
-		// лисненеры из контроллера манипулируют данными
-		// model нотифицирует модель об изменении
-		// view отреагировало на event
-		// ждем sc.hasNext()
-		control = new SimpleController();
-		sc = new Scanner(System.in);
 		ArrayList<String> pars = new ArrayList<>();
-		String command = null;
-		System.out.println(WELCOME_TO_OUR_INFORMATION_SYSTEM); // extract
-																// constants
-		System.out.println(PLEASE_ENTER_COMMAND_YOU_NEED_ENTER_HELP_FOR_HELP);
+		String command = "";
+		System.out.println(Answers.WELCOME_TO_OUR_INFORMATION_SYSTEM);
+		System.out.println(Answers.PLEASE_ENTER_COMMAND_YOU_NEED_ENTER_HELP_FOR_HELP);
 		while (sc.hasNext()) {
 			pars.removeAll(pars);
 			StringTokenizer st = new StringTokenizer(sc.nextLine());
@@ -59,175 +33,228 @@ public class ConsoleView implements View {
 				command = st.nextToken();
 
 			switch (command){
-				case EXIT: 
+				case Answers.EXIT: 
 					end();
 					break;
 					
-				case ADD: {
+				case Answers.ADD: {
 					while (st.hasMoreTokens()) {
 						pars.add(st.nextToken());
 					}
 					if (pars.size() < 4) {
-						System.out.println(ENTER_MORE_PARAMETERS);
+						System.out.println(Answers.ENTER_MORE_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() > 4) {
-						System.out.println(TOO_MUCH_PARAMETERS);
+						System.out.println(Answers.TOO_MUCH_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() == 4) {
 						try {
-							if (control.add(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),
+							if (InformSystem.getController().add(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),
 									Integer.parseInt(pars.get(3))))
-								System.out.println(ADD_SUCCESS);
+								System.out.println(Answers.ADD_SUCCESS);
 						} catch (NumberFormatException ex) {
-							System.out.println(ENTER_CORRECT_PARAMETRES_PLEASE);
+							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+							printExample(command);
 							continue;
 						}
 					}
 				}
 					break;
 				
-				case DEL: {
+				case Answers.DEL: {
 					while (st.hasMoreTokens()) {
 						pars.add(st.nextToken());
 					}
 					if (pars.size() < 1) {
-						System.out.println(ENTER_MORE_PARAMETERS);
+						System.out.println(Answers.ENTER_MORE_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() > 1) {
-						System.out.println(TOO_MUCH_PARAMETERS);
+						System.out.println(Answers.TOO_MUCH_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() == 1) {
 						try {
-							if (control.del(Integer.parseInt(pars.get(0))))
-								System.out.println(DELETE_SUCCESS);
+							if (InformSystem.getController().del(Integer.parseInt(pars.get(0))))
+								System.out.println(Answers.DELETE_SUCCESS);
 							else
-								System.out.println(THIS_NUM_IS_NOT_EXIST);
+								System.out.println(Answers.THIS_NUM_IS_NOT_EXIST);
 						} catch (NumberFormatException ex) {
-							System.out.println(ENTER_CORRECT_PARAMETRES_PLEASE);
+							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+							printExample(command);
 							continue;
 						}
 					}
 				}
 					break;
-				case EDIT: {
+				case Answers.EDIT: {
 					while (st.hasMoreTokens()) {
 						pars.add(st.nextToken());
 					}
 					if (pars.size() < 1) {
-						System.out.println(ENTER_MORE_PARAMETERS);
+						System.out.println(Answers.ENTER_MORE_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() > 4) {
-						System.out.println(TOO_MUCH_PARAMETERS);
+						System.out.println(Answers.TOO_MUCH_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					try {
 						if (pars.size() == 4)
-							if(control.edit(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),Integer.parseInt(pars.get(3))))
-								System.out.println(EDIT_SUCCESS);
+							if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),Integer.parseInt(pars.get(3))))
+								System.out.println(Answers.EDIT_SUCCESS);
 						if (pars.size() == 3)
-							if(control.edit(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2)))
-								System.out.println(EDIT_SUCCESS);
-						if ((pars.size() == 2)&&!Boolean.parseBoolean(pars.get(1)))
-							if(control.edit(Integer.parseInt(pars.get(0)), pars.get(1)))
-								System.out.println(EDIT_SUCCESS);
-						if ((pars.size() == 2)&&Boolean.parseBoolean(pars.get(1)))
-								if(control.edit(Integer.parseInt(pars.get(0)), Boolean.parseBoolean(pars.get(1))))
-									System.out.println(EDIT_SUCCESS);
+							if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2)))
+								System.out.println(Answers.EDIT_SUCCESS);
+						if ((pars.size() == 2) && !Boolean.parseBoolean(pars.get(1)))
+							if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1)))
+								System.out.println(Answers.EDIT_SUCCESS);
+						if ((pars.size() == 2) && Boolean.parseBoolean(pars.get(1)))
+								if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), Boolean.parseBoolean(pars.get(1))))
+									System.out.println(Answers.EDIT_SUCCESS);
 					} catch (NumberFormatException ex) {
-						System.out.println(ENTER_CORRECT_PARAMETRES_PLEASE);
+						System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+						printExample(command);
 						continue;
 					}
 				}
 					break;
-				case VIEW: {
+				case Answers.VIEW: {
 					while (st.hasMoreTokens()) {
 						pars.add(st.nextToken());
 					}
 					if (pars.size() < 1) {
-						System.out.println(ENTER_MORE_PARAMETERS);
+						System.out.println(Answers.ENTER_MORE_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() > 1) {
-						System.out.println(TOO_MUCH_PARAMETERS);
+						System.out.println(Answers.TOO_MUCH_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() == 1) {
 						try {
-							if(!control.view(Integer.parseInt(pars.get(0))))
-								System.out.println(THIS_BOOK_IS_NOT_EXIST);
+							if(!InformSystem.getController().view(Integer.parseInt(pars.get(0))))
+								System.out.println(Answers.THIS_BOOK_IS_NOT_EXIST);
 						} catch (NumberFormatException ex) {
-							System.out.println(ENTER_CORRECT_PARAMETRES_PLEASE);
+							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+							printExample(command);
 							continue;
 						}
 					}
 				}
 					break;
-				case VIEW_ALL: 
+				case Answers.VIEW_ALL: 
 					try {
-						control.viewAll();
-					} catch (FileNotFoundException ex){
-						System.out.println(BOOKS_NOT_FOUND);
+						InformSystem.getController().viewAll();
+					} catch (NullPointerException ex){
+						System.out.println(Answers.BOOKS_NOT_FOUND);
 					}
 					break;
 				
-				case COPY: {
+				case Answers.COPY: {
 					while (st.hasMoreTokens()) {
 						pars.add(st.nextToken());
 					}
 					if (pars.size() < 1) {
-						System.out.println(ENTER_MORE_PARAMETERS);
+						System.out.println(Answers.ENTER_MORE_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() > 1) {
-						System.out.println(TOO_MUCH_PARAMETERS);
+						System.out.println(Answers.TOO_MUCH_PARAMETERS);
+						printExample(command);
 						continue;
 					}
 					if (pars.size() == 1) {
 						try {
-							if(control.copy(pars.get(0)))
-								System.out.println(COPY_SUCCESS);
+							if(InformSystem.getController().copy(pars.get(0)))
+								System.out.println(Answers.COPY_SUCCESS);
 						} catch (FileNotFoundException ex){
-							System.out.println(FILE_NOT_FOUND);
+							System.out.println(Answers.FILE_NOT_FOUND);
 						}
 					}
 					
 				}
 					break;
 				
-				case HELP: {
-					System.out.println("add - add new book into library(add Number on shelf, Author, Title, ISBN)");
-					System.out.println("del - delete existing book(del Number on shelf)");
-					System.out.println("edit - edit existing book in library(edit Number on shelf and Author/Title/ISBN)");
-					System.out.println("view - view existing book in library(viewlib Number on shelf)");
-					System.out.println("viewAll - view all existing book in library(viewAll)");
-					System.out.println("copy - copy all books from some file to our archive(copy fileName)");
+				case Answers.HELP: {
+	 				System.out.println("Every argument must be without spaces. You can use '_' to change spaces. All arguments must be divided by spases"+"\n");
+					System.out.println("add - add new book into library"+"\n"+"Example:"+"\t"+"add NumberOnShelf Author Title ISBN"+"\t"+"(int String String int)"+"\n");
+					System.out.println("del - delete existing book"+"\n"+"Example:"+"\t"+"del NumberOnShelf"+"\t"+"\t"+"\t"+"(int)"+"\n");
+					System.out.println("edit - edit existing book in library(Select one of the change options)"+"\n"+"Example1:"+"\t"+"edit NumberOnShelf Author Title ISBN"+"\t"+"(int String String int)");
+					System.out.println("Example2:"+"\t"+"edit NumberOnShelf Author Title"+"\t"+"\t"+"(int String String)");
+					System.out.println("Example3:"+"\t"+"edit NumberOnShelf Author"+"\t"+"\t"+"(int String)");
+					System.out.println("Example4:"+"\t"+"edit NumberOnShelf Issued"+"\t"+"\t"+"(int boolean)"+"\n");
+					System.out.println("view - view existing book in library"+"\n"+"Example:"+"\t"+"view NumberOnShelf"+"\t"+"\t"+"\t"+"(int)"+"\n");
+					System.out.println("viewAll - view all existing book in library"+"\n"+"Example:"+"\t"+"viewAll"+"\n");
+					System.out.println("copy - copy all books from some file to our archive"+"\n"+"Example:"+"\t"+"copy fileName"+"\t"+"\t"+"\t"+"\t"+"(String)"+"\n");
 					System.out.println("exit - exit from program");
 				}
 					break;
 				default: {
-					System.out.println(UNKNOWN_COMMAND);
-					break;
+					System.out.println(Answers.UNKNOWN_COMMAND);
+					System.out.println(Answers.ENTER_HELP_TO_GET_MORE_INFORMATION);
 				}
+					break;
 			}
 		}
 	}
 
 	@Override
-	public void end() {
-		System.out.println(THANK_YOU_FOR_USING_OUR_SYS_INFO_GOODBYE);
+	public void end() throws IOException {
+		InformSystem.getController().update();
+		System.out.println(Answers.THE_WHOLE_DATA_HAS_BEEN_SAVED);
+		System.out.println(Answers.THANK_YOU_FOR_USING_OUR_SYS_INFO_GOODBYE);
+
 		sc.close();
 		System.exit(0);
 	}
-
-	public void print(String... args) {
-		for (int i = 0; i < args.length; i++) {
-			System.out.print(args[i] + " ");
+	
+	public void printExample(String cmd){
+		switch(cmd){
+			case Answers.ADD :{
+				System.out.println(Answers.ENTER_CORRECT_COMMAND_TO_ADD_BOOK);
+				System.out.println("Example:"+"\t"+"add NumberOnShelf Author Title ISBN"+"\t"+"(int String String int)");
+			}
+				break;
+			
+			case Answers.DEL:{
+				System.out.println(Answers.ENTER_CORRECT_COMMAND_TO_DELETE_BOOK);
+				System.out.println("Example:"+"\t"+"del NumberOnShelf"+"\t"+"\t"+"\t"+"(int)");
+			}
+				break;
+			
+			case Answers.EDIT:{
+				System.out.println(Answers.ENTER_CORRECT_COMMAND_TO_EDIT_BOOK);
+				System.out.println("Example1:"+"\t"+"edit NumberOnShelf Author Title ISBN"+"\t"+"(int String String int)");
+				System.out.println("Example2:"+"\t"+"edit NumberOnShelf Author Title"+ "\t"+"\t"+"(int String String)");
+				System.out.println("Example3:"+"\t"+"edit NumberOnShelf Author"+"\t"+"\t"+"(int String)");
+				System.out.println("Example4:"+"\t"+"edit NumberOnShelf Issued"+"\t"+"\t"+"(int boolean)");
+			}
+			break;
+			
+			case Answers.VIEW:{
+				System.out.println(Answers.ENTER_CORRECT_COMMAND_TO_VIEW_BOOK);
+				System.out.println("Example:"+"\t"+"view NumberOnShelf"+"\t"+"\t"+"\t"+"(int)");
+			}
+			break;
+			
+			case Answers.COPY:{
+				System.out.println(Answers.ENTER_CORRECT_COMMAND_TO_COPY_LIBRARY_FROM_FILE);
+				System.out.println("Example:"+"\t"+"copy fileName"+"\t"+"\t"+"\t"+"\t"+"(String)");
+			}
+			break;
 		}
-		System.out.println();
 	}
+
 }

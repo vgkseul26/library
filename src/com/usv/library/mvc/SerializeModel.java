@@ -15,9 +15,15 @@ import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import com.usv.library.InformSystem;
 import com.usv.library.lib.Book;
 import com.usv.library.lib.BookOnShelf;
 
+/**
+ * The serialize realization of {@link Model} component
+ * @author vgkseul26
+ *
+ */
 public class SerializeModel implements Model, Serializable {
 	/**
 	 * 
@@ -25,7 +31,6 @@ public class SerializeModel implements Model, Serializable {
 	private static final long serialVersionUID = -5106945804509514055L;
 	private static final String LIBRARY_DATE = "library.zip";
 	private Map<Integer, BookOnShelf> shelfBooks;
-	private View view = new ConsoleView();
 
 	public SerializeModel(){
 		try {
@@ -37,9 +42,9 @@ public class SerializeModel implements Model, Serializable {
 		}
 	}
 
-	public Map<Integer, BookOnShelf> getShelfBooks() {
-		return shelfBooks;
-	}
+//	public Map<Integer, BookOnShelf> getShelfBooks() {
+//		return shelfBooks;
+//	}
 
 	public void update() throws IOException {
 		try (OutputStream fos = new GZIPOutputStream(new FileOutputStream(LIBRARY_DATE));) {
@@ -66,9 +71,10 @@ public class SerializeModel implements Model, Serializable {
 				}
 
 			} catch (EOFException ex) {
+			}
+			finally {
 				ois.close();
 			}
-			ois.close();
 		} catch (IOException | ClassNotFoundException ex) {
 			throw ex;
 		}
@@ -106,27 +112,25 @@ public class SerializeModel implements Model, Serializable {
 		return true;
 	}
 
-	public boolean viewBook(int numOnShelf) throws ClassNotFoundException, IOException {
+	public boolean viewBook(int numOnShelf) {
 		BookOnShelf book;
-		if ((book = readAll(LIBRARY_DATE).get(numOnShelf)) != null) {
-			view.print(String.valueOf(numOnShelf), book.getBook().getauthor(), book.getBook().gettitle(),
-					String.valueOf(book.getBook().getISBN()), String.valueOf(book.getIssued()));
+		if ((book = shelfBooks.get(numOnShelf)) != null) {
+			InformSystem.getController().print(new StringBuilder(String.valueOf(numOnShelf)), new StringBuilder(book.getBook().getauthor()),  new StringBuilder(book.getBook().gettitle()),
+					new StringBuilder(book.getBook().getIsbn()), new StringBuilder(String.valueOf(book.getIssued())));
 			return true;
 		} else
 			return false;
 	}
-
-	public void viewAll() throws ClassNotFoundException, IOException {
-		for (Entry<Integer, BookOnShelf> e : readAll(LIBRARY_DATE).entrySet()) {
-			view.print(String.valueOf(e.getKey()), e.getValue().getBook().getauthor(), e.getValue().getBook()
-					.gettitle(), String.valueOf(e.getValue().getBook().getISBN()),
-					String.valueOf(e.getValue().getIssued()));
+	public void viewAll() {
+		for (Entry<Integer, BookOnShelf> e : shelfBooks.entrySet()) {
+			InformSystem.getController().print(new StringBuilder(String.valueOf(e.getKey())), new StringBuilder(e.getValue().getBook().getauthor()),  new StringBuilder(e.getValue().getBook()
+					.gettitle()), new StringBuilder(e.getValue().getBook().getIsbn()),
+					 new StringBuilder(String.valueOf(e.getValue().getIssued())));
 		}
 	}
 	
 	public boolean copy(String fileName) throws ClassNotFoundException, IOException{
 		for (Entry<Integer, BookOnShelf> e : readAll(fileName).entrySet()) {
-//			System.out.println(e.getKey()+" "+e.getValue());
 			addBook(e.getKey(), e.getValue());
 		}
 		return true;

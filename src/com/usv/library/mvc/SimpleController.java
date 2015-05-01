@@ -1,7 +1,11 @@
 package com.usv.library.mvc;
 
 import java.io.IOException;
-
+/**
+ * The simple realization of the {@link Controller} component
+ * @author vgkseul26
+ *
+ */
 public class SimpleController implements Controller {
 	private Model model = new SerializeModel();
 	public SimpleController() {
@@ -30,13 +34,13 @@ public class SimpleController implements Controller {
 	}
 	
 	public boolean edit(int numOnShelf, String author, String title) throws IOException {
-		boolean b = model.setBook(numOnShelf, model.createBookOnShelf(numOnShelf, model.createBook(author, title, model.getBook(numOnShelf).getBook().getISBN())));
+		boolean b = model.setBook(numOnShelf, model.createBookOnShelf(numOnShelf, model.createBook(author, title, model.getBook(numOnShelf).getBook().getIsbn())));
 		model.update();
 		return b;
 	}
 	
 	public boolean edit(int numOnShelf, String author) throws IOException {
-		boolean b = model.setBook(numOnShelf, model.createBookOnShelf(numOnShelf, model.createBook(author, model.getBook(numOnShelf).getBook().gettitle(), model.getBook(numOnShelf).getBook().getISBN())));
+		boolean b = model.setBook(numOnShelf, model.createBookOnShelf(numOnShelf, model.createBook(author, model.getBook(numOnShelf).getBook().gettitle(), model.getBook(numOnShelf).getBook().getIsbn())));
 		model.update();
 		return b;
 	}
@@ -48,7 +52,7 @@ public class SimpleController implements Controller {
 	}
 	
 	@Override
-	public boolean view(int numOnShelf) throws ClassNotFoundException, IOException{
+	public boolean view(int numOnShelf) {
 		boolean b = model.viewBook(numOnShelf);
 		return b;
 	}
@@ -61,7 +65,20 @@ public class SimpleController implements Controller {
 	}
 	
 	@Override
-	public void viewAll() throws ClassNotFoundException, IOException{
+	public void viewAll() {
 		model.viewAll();
+	}
+	
+	@Override
+	public void update() throws IOException{
+		model.update();
+	}
+	
+	@Override
+	public void print(StringBuilder... args) {
+		for (int i = 0; i < args.length; i++) {
+			System.out.print(args[i] + " ");
+		}
+		System.out.println();
 	}
 }

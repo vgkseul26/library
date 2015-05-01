@@ -2,21 +2,38 @@ package com.usv.library.lib;
 
 import java.io.Serializable;
 
+/**
+ * Represents a book in the library.
+ * 
+ * @author vgkseul26
+ */
 public class BookOnShelf implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8005726542872967278L;
+	/**
+	 * Book's number in library
+	 */
 	private int numOnShelf;
+	/**
+	 * Is this book free or no?!
+	 */
 	private boolean issued;
-	private final int ISBN;
+	/**
+	 * Book's ISBN
+	 */
+	private final int isbn;
+	/**
+	 *Book
+	 */
 	private final Book book;
 
 	public BookOnShelf(int numOnShelf, Book book) {
 		this.numOnShelf = numOnShelf;
 		this.issued = false;
 		this.book = book;
-		this.ISBN = book.getISBN();
+		this.isbn = book.getIsbn();
 	}
 
 	public int getNumOnShelf() {
