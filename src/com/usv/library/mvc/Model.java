@@ -130,5 +130,13 @@ public interface Model {
 	 */
 	boolean copy(String fileName) throws ClassNotFoundException, IOException;
 	
+	/**
+	 * Finds data according to during pattern
+	 * 
+	 * @param pattern
+	 * 			template of data
+	 * @throws PatternSyntaxException
+	 * 				if something wrong with syntax
+	 */
 	void find(String pattern) throws PatternSyntaxException;
 }

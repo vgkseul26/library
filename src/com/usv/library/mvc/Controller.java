@@ -145,5 +145,13 @@ public interface Controller {
 	 */
 	void print(StringBuilder... args);
 	
+	/**
+	 * Finds data according to during pattern
+	 * 
+	 * @param pattern
+	 * 			template of data
+	 * @throws PatternSyntaxException
+	 * 				if something wrong with syntax
+	 */
 	void find(String pattern) throws PatternSyntaxException;
 }
