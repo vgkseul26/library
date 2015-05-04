@@ -7,6 +7,7 @@ package com.usv.library.mvc;
 public final class Answers {
 	public static final String ENTER_HELP_TO_GET_MORE_INFORMATION = "Enter 'help' to get more information";
 	public static final String THE_WHOLE_DATA_HAS_BEEN_SAVED = "The whole data has been saved";
+	public static final String PRINT_HELP_REGEX_TO_GET_MORE_INFORMATION_ABOUT_REGULAR_EXPRESSIONS = "Print 'helpRegex' to get more information about Regular Expressions";
 	public static final String BOOKS_NOT_FOUND = "Books not found";
 	public static final String FILE_NOT_FOUND = "File not found";
 	public static final String COPY_SUCCESS = "Copy success";

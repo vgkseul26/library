@@ -12,18 +12,17 @@ public class BookOnShelf implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -8005726542872967278L;
+	
 	/**
 	 * Book's number in library
 	 */
 	private int numOnShelf;
+	
 	/**
 	 * Is this book free or no?!
 	 */
 	private boolean issued;
-	/**
-	 * Book's ISBN
-	 */
-	private final int isbn;
+	
 	/**
 	 *Book
 	 */
@@ -33,7 +32,7 @@ public class BookOnShelf implements Serializable {
 		this.numOnShelf = numOnShelf;
 		this.issued = false;
 		this.book = book;
-		this.isbn = book.getIsbn();
+		//this.isbn = book.getIsbn();
 	}
 
 	public int getNumOnShelf() {

@@ -54,7 +54,7 @@ public class SerializeModel implements Model, Serializable {
 	public void update() throws IOException {
 		try (OutputStream fos = new GZIPOutputStream(new FileOutputStream(LIBRARY_DATE));) {
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			for (Entry e : getShelfBooks().entrySet()) {
+			for (Entry<?, ?> e : getShelfBooks().entrySet()) {
 				oos.writeObject(e.getValue());
 				oos.flush();
 			}

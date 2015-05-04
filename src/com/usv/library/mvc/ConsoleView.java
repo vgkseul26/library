@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import com.usv.library.InformSystem;
@@ -174,10 +172,10 @@ public class ConsoleView implements View {
 							InformSystem.getController().find(pars.get(0));
 						} catch (PatternSyntaxException ex){
 							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
-							System.out.println("Print 'helpRegex' to get more information about Regular Expressions");
+							System.out.println(Answers.PRINT_HELP_REGEX_TO_GET_MORE_INFORMATION_ABOUT_REGULAR_EXPRESSIONS);
 						}
 					}
-				}
+				} 
 					break;
 				
 				case Answers.COPY: {
