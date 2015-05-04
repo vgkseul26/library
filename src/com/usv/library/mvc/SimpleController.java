@@ -78,10 +78,7 @@ public class SimpleController implements Controller {
 	
 	@Override
 	public void print(StringBuilder... args) {
-		for (int i = 0; i < args.length; i++) {
-			System.out.print(args[i] + " ");
-		}
-		System.out.println();
+		InformSystem.getView().print(args);
 	}
 	
 	@Override

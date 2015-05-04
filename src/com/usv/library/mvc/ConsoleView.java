@@ -16,13 +16,14 @@ import com.usv.library.InformSystem;
  */
 public class ConsoleView implements View {
 	private Scanner sc;
-
+	private ArrayList<String> pars;
+	
 	public ConsoleView() {
 		sc = new Scanner(System.in);
 	}
 
 	public void start() throws IOException, ClassNotFoundException {
-		ArrayList<String> pars = new ArrayList<>();
+		pars = new ArrayList<>();
 		String command = "";
 		System.out.println(Answers.WELCOME_TO_OUR_INFORMATION_SYSTEM);
 		System.out.println(Answers.PLEASE_ENTER_COMMAND_YOU_NEED_ENTER_HELP_FOR_HELP);
@@ -39,168 +40,31 @@ public class ConsoleView implements View {
 					break;
 					
 				case Answers.ADD: {
-					while (st.hasMoreTokens()) {
-						pars.add(st.nextToken());
-					}
-					if (pars.size() < 4) {
-						System.out.println(Answers.ENTER_MORE_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() > 4) {
-						System.out.println(Answers.TOO_MUCH_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() == 4) {
-						try {
-							if (InformSystem.getController().add(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),
-									Integer.parseInt(pars.get(3))))
-								System.out.println(Answers.ADD_SUCCESS);
-				 			else
-								System.out.println(Answers.ERROR_THIS_BOOK_HAS_BEEN_ALREADY_ADDED);
-						} catch (NumberFormatException ex) {
-							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
-							printExample(command);
-							continue;
-						}
-					}
+					add(st, command);
 				}
 					break;
 				
 				case Answers.DEL: {
-					while (st.hasMoreTokens()) {
-						pars.add(st.nextToken());
-					}
-					if (pars.size() < 1) {
-						System.out.println(Answers.ENTER_MORE_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() > 1) {
-						System.out.println(Answers.TOO_MUCH_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() == 1) {
-						try {
-							if (InformSystem.getController().del(Integer.parseInt(pars.get(0))))
-								System.out.println(Answers.DELETE_SUCCESS);
-							else
-								System.out.println(Answers.THIS_NUM_IS_NOT_EXIST);
-						} catch (NumberFormatException ex) {
-							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
-							printExample(command);
-							continue;
-						}
-					}
+					delete(st, command);
 				}
 					break;
+					
 				case Answers.EDIT: {
-					while (st.hasMoreTokens()) {
-						pars.add(st.nextToken());
-					}
-					if (pars.size() < 1) {
-						System.out.println(Answers.ENTER_MORE_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() > 4) {
-						System.out.println(Answers.TOO_MUCH_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					try {
-						if (pars.size() == 4)
-							if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),Integer.parseInt(pars.get(3))))
-								System.out.println(Answers.EDIT_SUCCESS);
-						if (pars.size() == 3)
-							if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2)))
-								System.out.println(Answers.EDIT_SUCCESS);
-						if ((pars.size() == 2) && !Boolean.parseBoolean(pars.get(1)))
-							if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1)))
-								System.out.println(Answers.EDIT_SUCCESS);
-						if ((pars.size() == 2) && Boolean.parseBoolean(pars.get(1)))
-								if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), Boolean.parseBoolean(pars.get(1))))
-									System.out.println(Answers.EDIT_SUCCESS);
-					} catch (NumberFormatException ex) {
-						System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
-						printExample(command);
-						continue;
-					}
+					edit(st, command);
 				}
 					break;
+					
 				case Answers.VIEW: {
-					while (st.hasMoreTokens()) {
-						pars.add(st.nextToken());
-					}
-					if (pars.size() < 1) {
-						System.out.println(Answers.ENTER_MORE_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() > 1) {
-						System.out.println(Answers.TOO_MUCH_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() == 1) {
-						try {
-							if(!InformSystem.getController().view(Integer.parseInt(pars.get(0))))
-								System.out.println(Answers.THIS_BOOK_IS_NOT_EXIST);
-						} catch (NumberFormatException ex) {
-							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
-							printExample(command);
-							continue;
-						}
-					}
+					view(st, command);
 				}
 					break;
 				case Answers.VIEW_ALL: {
-					while (st.hasMoreTokens()) {
-						pars.add(st.nextToken());
-					}
-					if (pars.size() == 0) {
-						try {
-							InformSystem.getController().viewAll();
-						} catch (NullPointerException ex){
-							System.out.println(Answers.BOOKS_NOT_FOUND);
-						}
-					}
-					if (pars.size() == 1){
-						try {
-							InformSystem.getController().find(pars.get(0));
-						} catch (PatternSyntaxException ex){
-							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
-							System.out.println(Answers.PRINT_HELP_REGEX_TO_GET_MORE_INFORMATION_ABOUT_REGULAR_EXPRESSIONS);
-						}
-					}
+					viewAll(st, command);
 				} 
 					break;
 				
 				case Answers.COPY: {
-					while (st.hasMoreTokens()) {
-						pars.add(st.nextToken());
-					}
-					if (pars.size() < 1) {
-						System.out.println(Answers.ENTER_MORE_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() > 1) {
-						System.out.println(Answers.TOO_MUCH_PARAMETERS);
-						printExample(command);
-						continue;
-					}
-					if (pars.size() == 1) {
-						try {
-							if(InformSystem.getController().copy(pars.get(0)))
-								System.out.println(Answers.COPY_SUCCESS);
-						} catch (FileNotFoundException ex){
-							System.out.println(Answers.FILE_NOT_FOUND);
-						}
-					}
-					
+					copy(st, command);					
 				}
 					break;
 				
@@ -258,6 +122,14 @@ public class ConsoleView implements View {
 		System.exit(0);
 	}
 	
+	@Override
+	public void print(StringBuilder... args) {
+		for (int i = 0; i < args.length; i++) {
+			System.out.print(args[i] + " ");
+		}
+		System.out.println();
+	}
+	
 	public void printExample(String cmd){
 		switch(cmd){
 			case Answers.ADD :{
@@ -294,5 +166,168 @@ public class ConsoleView implements View {
 			break;
 		}
 	}
+	
+	private void delete(StringTokenizer st, String command) throws IOException{
+		while (st.hasMoreTokens()) {
+			pars.add(st.nextToken());
+		}
+		if (pars.size() < 1) {
+			System.out.println(Answers.ENTER_MORE_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() > 1) {
+			System.out.println(Answers.TOO_MUCH_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() == 1) {
+			try {
+				if (InformSystem.getController().del(Integer.parseInt(pars.get(0))))
+					System.out.println(Answers.DELETE_SUCCESS);
+				else
+					System.out.println(Answers.THIS_NUM_IS_NOT_EXIST);
+			} catch (NumberFormatException ex) {
+				System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+				printExample(command);
+				return;
+			}
+		}
+	}
+	
+	private void add (StringTokenizer st, String command) throws IOException{
+		while (st.hasMoreTokens()) {
+			pars.add(st.nextToken());
+		}
+		if (pars.size() < 4) {
+			System.out.println(Answers.ENTER_MORE_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() > 4) {
+			System.out.println(Answers.TOO_MUCH_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() == 4) {
+			try {
+				if (InformSystem.getController().add(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),
+						Integer.parseInt(pars.get(3))))
+					System.out.println(Answers.ADD_SUCCESS);
+	 			else
+					System.out.println(Answers.ERROR_THIS_BOOK_HAS_BEEN_ALREADY_ADDED);
+			} catch (NumberFormatException ex) {
+				System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+				printExample(command);
+				return;
+			}
+		}
+	}
+	
+	private void edit(StringTokenizer st, String command) throws IOException{
+		while (st.hasMoreTokens()) {
+			pars.add(st.nextToken());
+		}
+		if (pars.size() < 1) {
+			System.out.println(Answers.ENTER_MORE_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() > 4) {
+			System.out.println(Answers.TOO_MUCH_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		try {
+			if (pars.size() == 4)
+				if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),Integer.parseInt(pars.get(3))))
+					System.out.println(Answers.EDIT_SUCCESS);
+			if (pars.size() == 3)
+				if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2)))
+					System.out.println(Answers.EDIT_SUCCESS);
+			if ((pars.size() == 2) && !Boolean.parseBoolean(pars.get(1)))
+				if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), pars.get(1)))
+					System.out.println(Answers.EDIT_SUCCESS);
+			if ((pars.size() == 2) && Boolean.parseBoolean(pars.get(1)))
+					if(InformSystem.getController().edit(Integer.parseInt(pars.get(0)), Boolean.parseBoolean(pars.get(1))))
+						System.out.println(Answers.EDIT_SUCCESS);
+		} catch (NumberFormatException ex) {
+			System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+			printExample(command);
+			return;
+		}
 
+	}
+	
+	private void view(StringTokenizer st, String command){
+		while (st.hasMoreTokens()) {
+			pars.add(st.nextToken());
+		}
+		if (pars.size() < 1) {
+			System.out.println(Answers.ENTER_MORE_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() > 1) {
+			System.out.println(Answers.TOO_MUCH_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() == 1) {
+			try {
+				if(!InformSystem.getController().view(Integer.parseInt(pars.get(0))))
+					System.out.println(Answers.THIS_BOOK_IS_NOT_EXIST);
+			} catch (NumberFormatException ex) {
+				System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+				printExample(command);
+				return;
+			}
+		}
+	}
+		
+	private void viewAll(StringTokenizer st, String command){
+		while (st.hasMoreTokens()) {
+			pars.add(st.nextToken());
+		}
+		if (pars.size() == 0) {
+			try {
+				InformSystem.getController().viewAll();
+			} catch (NullPointerException ex){
+				System.out.println(Answers.BOOKS_NOT_FOUND);
+			}
+		}
+		if (pars.size() == 1){
+			try {
+				InformSystem.getController().find(pars.get(0));
+			} catch (PatternSyntaxException ex){
+				System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+				System.out.println(Answers.PRINT_HELP_REGEX_TO_GET_MORE_INFORMATION_ABOUT_REGULAR_EXPRESSIONS);
+			}
+		}
+	}
+	
+	private void copy(StringTokenizer st, String command) throws ClassNotFoundException, IOException{
+		while (st.hasMoreTokens()) {
+			pars.add(st.nextToken());
+		}
+		if (pars.size() < 1) {
+			System.out.println(Answers.ENTER_MORE_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() > 1) {
+			System.out.println(Answers.TOO_MUCH_PARAMETERS);
+			printExample(command);
+			return;
+		}
+		if (pars.size() == 1) {
+			try {
+				if(InformSystem.getController().copy(pars.get(0)))
+					System.out.println(Answers.COPY_SUCCESS);
+			} catch (FileNotFoundException ex){
+				System.out.println(Answers.FILE_NOT_FOUND);
+			}
+		}
+
+	}
 }

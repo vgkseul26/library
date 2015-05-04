@@ -22,5 +22,13 @@ public interface View {
 	 * @throws IOException
 	 */
 	void end() throws IOException;
+	
+	/**
+	 * Print book
+	 * 
+	 * @param args
+	 * 			array of String values that must be printed
+	 */
+	void print(StringBuilder... args);
 
 }
