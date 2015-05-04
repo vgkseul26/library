@@ -2,6 +2,7 @@ package com.usv.library.mvc;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.PatternSyntaxException;
 
 import com.usv.library.lib.Book;
 import com.usv.library.lib.BookOnShelf;
@@ -128,4 +129,6 @@ public interface Model {
 	 * 				if there are some problems with classpath
 	 */
 	boolean copy(String fileName) throws ClassNotFoundException, IOException;
+	
+	void find(String pattern) throws PatternSyntaxException;
 }

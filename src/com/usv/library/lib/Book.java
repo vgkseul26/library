@@ -31,11 +31,11 @@ public class Book implements Serializable{
 		this.isbn = isbn;
 	}
 
-	public String getauthor() {
+	public String getAuthor() {
 		return author;
 	}
 
-	public String gettitle() {
+	public String getTitle() {
 		return title;
 	}
 

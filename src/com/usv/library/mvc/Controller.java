@@ -1,6 +1,7 @@
 package com.usv.library.mvc;
 
 import java.io.IOException;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * The interface of a Controller component.
@@ -22,6 +23,7 @@ public interface Controller {
 	 * @param ISBN
 	 * 			ISBN
 	 * @return true if adding success
+	 * 			false if book has been already added
 	 * @throws IOException
 	 * 				 if there are some problems with serialization
 	 */
@@ -141,5 +143,7 @@ public interface Controller {
 	 * @param args
 	 * 			array of String values that must be printed
 	 */
-	public void print(StringBuilder... args);
+	void print(StringBuilder... args);
+	
+	void find(String pattern) throws PatternSyntaxException;
 }

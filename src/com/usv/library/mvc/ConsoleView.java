@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import com.usv.library.InformSystem;
 
@@ -56,6 +59,8 @@ public class ConsoleView implements View {
 							if (InformSystem.getController().add(Integer.parseInt(pars.get(0)), pars.get(1), pars.get(2),
 									Integer.parseInt(pars.get(3))))
 								System.out.println(Answers.ADD_SUCCESS);
+				 			else
+								System.out.println(Answers.ERROR_THIS_BOOK_HAS_BEEN_ALREADY_ADDED);
 						} catch (NumberFormatException ex) {
 							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
 							printExample(command);
@@ -153,12 +158,26 @@ public class ConsoleView implements View {
 					}
 				}
 					break;
-				case Answers.VIEW_ALL: 
-					try {
-						InformSystem.getController().viewAll();
-					} catch (NullPointerException ex){
-						System.out.println(Answers.BOOKS_NOT_FOUND);
+				case Answers.VIEW_ALL: {
+					while (st.hasMoreTokens()) {
+						pars.add(st.nextToken());
 					}
+					if (pars.size() == 0) {
+						try {
+							InformSystem.getController().viewAll();
+						} catch (NullPointerException ex){
+							System.out.println(Answers.BOOKS_NOT_FOUND);
+						}
+					}
+					if (pars.size() == 1){
+						try {
+							InformSystem.getController().find(pars.get(0));
+						} catch (PatternSyntaxException ex){
+							System.out.println(Answers.ENTER_CORRECT_PARAMETRES_PLEASE);
+							System.out.println("Print 'helpRegex' to get more information about Regular Expressions");
+						}
+					}
+				}
 					break;
 				
 				case Answers.COPY: {
@@ -198,9 +217,30 @@ public class ConsoleView implements View {
 					System.out.println("view - view existing book in library"+"\n"+"Example:"+"\t"+"view NumberOnShelf"+"\t"+"\t"+"\t"+"(int)"+"\n");
 					System.out.println("viewAll - view all existing book in library"+"\n"+"Example:"+"\t"+"viewAll"+"\n");
 					System.out.println("copy - copy all books from some file to our archive"+"\n"+"Example:"+"\t"+"copy fileName"+"\t"+"\t"+"\t"+"\t"+"(String)"+"\n");
+					System.out.println("helpRegex - a list of avaliable symbols for searching data"+"\n"+"Example:"+"\t"+"helpRegex"+"\n");
 					System.out.println("exit - exit from program");
 				}
 					break;
+					
+				case Answers.HELPREGEX:{
+					System.out.println(Answers.A_LIST_OF_AVALIABLE_SYMBOLS_FOR_SEARCHING_DATA);
+					System.out.println(Answers.START_OF_THE_CHECKING_LINE);
+					System.out.println(Answers.$_END_OF_THE_CHECKING_LINE);
+					System.out.println(Answers.ANY_SYMBOL);
+					System.out.println(Answers.SYMBOL_OR);
+					System.out.println(Answers.NULL_OR_ONE_EXAMPLES_OF_SYMBOL_BEFORE);
+					System.out.println(Answers.ONE_OR_MORE_EXAMPLES_OF_THE_SYMBOL_BEFORE);
+					System.out.println(Answers.NULL_OR_MORE_EXAMPLES_OF_THE_SYMBOL_BEFORE);
+					System.out.println(Answers.RANGE_OF_LETTERS_OR_NUMBERS);
+					System.out.println(Answers.D_NUMBER_SYMBOL);
+					System.out.println(Answers.D_THIS_SYMBOL_IS_NOT_A_NUMBER);
+					System.out.println(Answers.S_SYMBOL_OF_SPACE);
+					System.out.println(Answers.S_THIS_SYMBOL_IS_NOT_A_SPACE);
+					System.out.println(Answers.W_THIS_SYMBOL_CAN_BE_LETTER_OR_NUMBER_OR);
+					System.out.println(Answers.W_ANY_SYMBOL_EXCEPT_FOR_LETTER_OR_NUMBER_OR);
+				}
+					break;
+					
 				default: {
 					System.out.println(Answers.UNKNOWN_COMMAND);
 					System.out.println(Answers.ENTER_HELP_TO_GET_MORE_INFORMATION);
