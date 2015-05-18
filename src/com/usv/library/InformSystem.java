@@ -1,11 +1,11 @@
 package com.usv.library;
 
-import com.usv.library.mvc.ConsoleView;
-import com.usv.library.mvc.Controller;
-import com.usv.library.mvc.Model;
-import com.usv.library.mvc.SerializeModel;
-import com.usv.library.mvc.SimpleController;
-import com.usv.library.mvc.View;
+import com.usv.library.controller.Controller;
+import com.usv.library.controller.SimpleController;
+import com.usv.library.model.Model;
+import com.usv.library.model.XMLModel;
+import com.usv.library.view.ConsoleView;
+import com.usv.library.view.View;
 
 /**
  * My library application!
@@ -15,36 +15,13 @@ import com.usv.library.mvc.View;
  */
 
 public class InformSystem {
-	private static View view;
-	private static Controller control; 
-	private static Model model;
 
 	public static void main(String[] args) throws Exception {
-		control = new SimpleController();
-		model = new SerializeModel();
-	    view = new ConsoleView();
-				
+		Model model = new XMLModel();
+		Controller control = new SimpleController(model);
+		View view = new ConsoleView(control);
+
 		view.start();
 	}
-	
-	/**
-	 * @return a {@link Model} instance
-	 */
-	public static Model getModel() {
-		return model;
-	}
 
-	/**
-	 * @return a {@link View} instance
-	 */
-	public static View getView() {
-		return view;
-	}
-
-	/**
-	 * @return a {@link Controller} instance
-	 */
-	public static Controller getController() {
-		return control;
-	}
 }

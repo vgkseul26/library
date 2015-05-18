@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<BookOnShelf>
+    <NumberOnShelf>1</NumberOnShelf>
+    <book>
+        <author>wew</author>
+        <title>qwe</title>
+        <isbn>123</isbn>
+    </book>
+    <issued>false</issued>
+</BookOnShelf>
+<BookOnShelf>
+    <NumberOnShelf>2</NumberOnShelf>
+    <book>
+        <author>opa</author>
+        <title>alk</title>
+        <isbn>321</isbn>
+    </book>
+    <issued>false</issued>
+</BookOnShelf>

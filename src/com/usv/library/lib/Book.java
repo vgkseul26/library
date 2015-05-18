@@ -2,12 +2,15 @@ package com.usv.library.lib;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.*;
+
 /**
  * Represents a book.
  * 
  * @author vgkseul26
  */
-public class Book implements Serializable{
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Book implements Serializable {
 	/**
 	 * 
 	 */
@@ -15,20 +18,27 @@ public class Book implements Serializable{
 	/**
 	 * Author of the book
 	 */
-	private final String author;
+	@XmlElement(required = true)
+	private String author;
 	/**
-	 * Title  of the book
+	 * Title of the book
 	 */
-	private final String title;
+	@XmlElement(required = true)
+	private String title;
 	/**
 	 * ISBN of the book
 	 */
-	private final int isbn;
-	
-	public Book(String author, String title, int isbn){
+	@XmlElement(required = true)
+	private int isbn;
+
+	public Book(String author, String title, int isbn) {
 		this.author = author;
 		this.title = title;
 		this.isbn = isbn;
+	}
+
+	public Book() {
+
 	}
 
 	public String getAuthor() {
@@ -45,7 +55,27 @@ public class Book implements Serializable{
 
 	@Override
 	public String toString() {
-		return author + "/" + title + "/" + isbn;
+		return author + " " + title + " " + isbn;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if ((author.equals(other.author)) && (title.equals(other.title)))
+			return true;
+		else if (isbn == other.isbn)
+			return true;
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return isbn;
+	}
 }
